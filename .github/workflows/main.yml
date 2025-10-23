@@ -20,4 +20,4 @@ jobs:
       - name: Run Data Preparation
         run: python data_preparation.py
       - name: Run Model Training
-        run: python train_model.py
+        run: python training.py
