@@ -79,6 +79,6 @@ def train_and_evaluate(df_train, df_test, features, target):
 if __name__ == '__main__':
     # Execute the loading and training workflow
     df_train_data, df_test_data = load_data(TRAIN_FILE, TEST_FILE)
-    
+
     if df_train_data is not None:
         train_and_evaluate(df_train_data, df_test_data, FEATURES, TARGET)
