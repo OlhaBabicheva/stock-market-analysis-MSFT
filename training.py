@@ -1,13 +1,18 @@
+import os
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
-import os
 
 # --- CONFIGURATION ---
 TRAIN_FILE = 'train.csv'
 TEST_FILE = 'test.csv'
-FEATURES = ['Close', 'MA_10', 'MA_30', 'Volume', 'Daily_Range', 'Return_1d', 'Log_Return_1d', 'Momentum_5', 'Momentum_10', 'RSI_14',  'MACD', 'MACD_Signal']
+FEATURES = [
+        'Close', 'MA_10', 'MA_30',
+        'Volume', 'Daily_Range', 'Return_1d',
+        'Log_Return_1d', 'Momentum_5', 'Momentum_10',
+        'RSI_14', 'MACD', 'MACD_Signal'
+]
 TARGET = 'Next_Close'
 
 

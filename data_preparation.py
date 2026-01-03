@@ -47,7 +47,8 @@ def download_and_prepare_data(ticker, start_date, test_ratio):
     data['Log_Return_1d'] = np.log(close_prices / close_prices.shift(1))
 
     # Feature 6 & 7: Momentum
-    # (measures medium-term trend persistence. Positive values indicate upward pressure, negative values downward pressure)
+    # (measures medium-term trend persistence.
+    # Positive values indicate upward pressure, negative values downward pressure)
     data['Momentum_5'] = close_prices - close_prices.shift(5)
     data['Momentum_10'] = close_prices - close_prices.shift(10)
 
@@ -65,7 +66,7 @@ def download_and_prepare_data(ticker, start_date, test_ratio):
     # Relative Strength and RSI formula
     rs = avg_gain / avg_loss
     data['RSI_14'] = 100 - (100 / (1 + rs))
- 
+
     # Feature 9 & 10: MACD Indicator - trend-following momentum indicator
     # (MACD captures the relationship between short-term and long-term trends)
 
@@ -82,9 +83,15 @@ def download_and_prepare_data(ticker, start_date, test_ratio):
     data['Next_Close'] = close_prices.shift(-1)
 
     # Define the features we will use for the model
-    FEATURES = ['Close', 'MA_10', 'MA_30', 'Volume', 'Daily_Range', 'Return_1d', 'Log_Return_1d', 'Momentum_5', 'Momentum_10', 'RSI_14',  'MACD', 'MACD_Signal']
+    FEATURES = [
+        'Close', 'MA_10', 'MA_30',
+        'Volume', 'Daily_Range', 'Return_1d',
+        'Log_Return_1d', 'Momentum_5', 'Momentum_10',
+        'RSI_14', 'MACD', 'MACD_Signal'
+    ]
 
-    # Drop rows that have NaN values (due to the initial 30-day rolling window and the last target row)
+    # Drop rows that have NaN values due to the initial 30-day rolling
+    # window and the last target row
     df = data.dropna()
 
     print(f"Data cleaned. Usable data points: {len(df)}")
@@ -108,7 +115,7 @@ def save_data(df_train, df_test, features):
     df_train[cols_to_save].to_csv(TRAIN_FILE)
     df_test[cols_to_save].to_csv(TEST_FILE)
 
-    print(f"3. Data split and saved to CSV files:")
+    print("3. Data split and saved to CSV files:")
     print(f"Training set size: {len(df_train)} samples ({TRAIN_FILE})")
     print(f"Testing set size: {len(df_test)} samples ({TEST_FILE})")
 
