@@ -78,17 +78,11 @@ def download_and_prepare_data(ticker, start_date, test_ratio):
     # Signal line (EMA of MACD)
     data['MACD_Signal'] = data['MACD'].ewm(span=9, adjust=False).mean()
 
-    # Feature 11 & 12: Price vs Trend
-    # (Distance from moving averages indicates whether price is stretched above or below its recent equilibrium)
-    data['Close_MA10_Diff'] = close_prices - data['MA_10']
-    data['Close_MA30_Diff'] = close_prices - data['MA_30']
-
-
     # Target Variable: Predict the next day's Close price (Next_Close)
     data['Next_Close'] = close_prices.shift(-1)
 
     # Define the features we will use for the model
-    FEATURES = ['Close', 'MA_10', 'MA_30', 'Volume', 'Daily_Range', 'Return_1d', 'Log_Return_1d', 'Momentum_5', 'Momentum_10', 'RSI_14',  'MACD', 'MACD_Signal', 'Close_MA10_Diff', 'Close_MA30_Diff']
+    FEATURES = ['Close', 'MA_10', 'MA_30', 'Volume', 'Daily_Range', 'Return_1d', 'Log_Return_1d', 'Momentum_5', 'Momentum_10', 'RSI_14',  'MACD', 'MACD_Signal']
 
     # Drop rows that have NaN values (due to the initial 30-day rolling window and the last target row)
     df = data.dropna()
