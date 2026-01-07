@@ -1,6 +1,7 @@
 import os # Standard library for interacting with the operating system (checking file paths)
 import pandas as pd # Data manipulation library
 import numpy as np # Numerical library (used for mathematical operations)
+import joblib  # Library for saving and loading models
 from sklearn.linear_model import LinearRegression, Ridge  # Ridge adds L2 regularization to Linear Regression
 from sklearn.ensemble import RandomForestRegressor # A bagging-based ensemble model (often more stable than boosting)
 from sklearn.svm import SVR # Support Vector Regression (good for non-linear patterns)
@@ -11,6 +12,7 @@ from sklearn.metrics import mean_squared_error, r2_score # Functions to calculat
 # --- CONFIGURATION ---
 TRAIN_FILE = 'train.csv'
 TEST_FILE = 'test.csv'
+MODEL_EXPORT_FILE = 'models_bundle.joblib'
 FEATURES = [
     'Close', 'MA_10', 'MA_30',
     'Volume', 'Daily_Range', 'Return_1d',
@@ -59,7 +61,6 @@ def train_and_evaluate(df_train, df_test, features, target):
     # Prepare data for sklearn
     X_train_raw = df_train[features].values
     y_train = df_train[target].values
-
     X_test_raw = df_test[features].values
     y_test = df_test[target].values
 
@@ -89,6 +90,8 @@ def train_and_evaluate(df_train, df_test, features, target):
     }
 
     results = []
+    trained_models = {}
+
     print(f"2. Training models to predict absolute {target}...")
 
     for name, model in models.items():
@@ -105,6 +108,20 @@ def train_and_evaluate(df_train, df_test, features, target):
             "RMSE (USD)": round(rmse, 4),
             "R2 Score": round(r2, 4)
         })
+        trained_models[name] = model
+
+    # Save the bundle: models, scaler, and feature list
+    bundle = {
+        'models': trained_models,
+        'scaler': scaler,
+        'features': features
+    }
+    joblib.dump(bundle, MODEL_EXPORT_FILE)
+    print(f"3. Models and scaler saved to {MODEL_EXPORT_FILE}")
+
+    print("="*50)
+    print(pd.DataFrame(results).sort_values(by="RMSE (USD)").to_string(index=False))
+    print("="*50)
 
     comparison_df = pd.DataFrame(results)
     print("="*50)

@@ -29,7 +29,6 @@ def download_and_prepare_data(ticker, start_date, test_ratio):
     print(f"Download successful. Total samples: {len(data)}")
     print("2. Feature Engineering: Calculating Moving Averages and setting target...")
 
-    #Ania TO DO more features
     # Get the Close prices
     close_prices = data['Close'].copy()
 
