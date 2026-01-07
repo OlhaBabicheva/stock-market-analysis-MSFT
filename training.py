@@ -1,11 +1,7 @@
 import os # Standard library for interacting with the operating system (checking file paths)
 import pandas as pd # Data manipulation library
 import numpy as np # Numerical library (used for mathematical operations)
-from sklearn.linear_model import LinearRegression, Ridge  # Ridge adds L2 regularization to Linear Regression
-from sklearn.ensemble import RandomForestRegressor # A bagging-based ensemble model (often more stable than boosting)
-from sklearn.svm import SVR # Support Vector Regression (good for non-linear patterns)
-from sklearn.neural_network import MLPRegressor # Multi-layer Perceptron (Neural Network) regressor
-from sklearn.preprocessing import StandardScaler # Crucial for models like SVR and Ridge
+from sklearn.linear_model import LinearRegression # Simple statistical model for baseline prediction
 from sklearn.metrics import mean_squared_error, r2_score # Functions to calculate model accuracy
 
 # --- CONFIGURATION ---
@@ -54,66 +50,35 @@ def load_data(train_path, test_path):
     return df_train, df_test
 
 def train_and_evaluate(df_train, df_test, features, target):
-    """Trains multiple models to predict the Next_Close price."""
+    """Trains a Linear Regression model and evaluates its performance."""
 
     # Prepare data for sklearn
-    X_train_raw = df_train[features].values
+    X_train = df_train[features].values
     y_train = df_train[target].values
 
-    X_test_raw = df_test[features].values
+    X_test = df_test[features].values
     y_test = df_test[target].values
 
-    # Scaling is mandatory for SVR and Ridge to perform correctly
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train_raw)
-    X_test = scaler.transform(X_test_raw)
+    print("2. Training Linear Regression Baseline Model (sklearn).")
 
-    models = {
-        "Linear Regression": LinearRegression(),
-        "Ridge (L2)": Ridge(alpha=10.0), # Penalizes large coefficients to reduce noise sensitivity
-        "Random Forest": RandomForestRegressor(
-            n_estimators=400, # Number of trees
-            random_state=42
-        ), # Stable bagging
-        "Neural Network (MLP)": MLPRegressor(
-            hidden_layer_sizes=(10, 64, 64), # Three hidden layers with 10, 64 and 64 neurons
-            activation='relu',  # Rectified Linear Unit activation function
-            solver='adam',      # Optimizer for weight optimization
-            max_iter=1000,      # Maximum number of iterations
-            random_state=42     # For reproducible results
-        ),
-        "SVR (RBF Kernel)": SVR(
-            kernel='linear',
-            epsilon=0.1 # Threshold where no penalty is given to errors
-        ), # Non-linear boundary mapping
-    }
+    # Initialize and train the model
+    model = LinearRegression()
+    model.fit(X_train, y_train)
 
-    results = []
-    print(f"2. Training models to predict absolute {target}...")
+    # Make predictions on the test set
+    y_pred = model.predict(X_test)
 
-    for name, model in models.items():
-        # Training directly on the absolute price
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-        # Evaluation
-        mse = mean_squared_error(y_test, y_pred)
-        rmse = np.sqrt(mse)
-        r2 = r2_score(y_test, y_pred)
-        results.append({
-            "Model": name,
-            "MSE": round(mse, 4),
-            "RMSE (USD)": round(rmse, 4),
-            "R2 Score": round(r2, 4)
-        })
+    print("3. Model Evaluation:")
 
-    comparison_df = pd.DataFrame(results)
-    print("="*50)
-    print(f"MODEL COMPARISON SUMMARY (Target: {target})")
-    print("="*50)
-    print(comparison_df.sort_values(by="RMSE (USD)").to_string(index=False))
-    print("="*50)
+    # Calculate performance metrics
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, y_pred)
 
-    return comparison_df
+    print(f"Features used: {', '.join(features)}")
+    print(f"Mean Squared Error (MSE): {mse:.4f}")
+    print(f"Root Mean Squared Error (RMSE): {rmse:.4f} USD")
+    print(f"R-squared (R2) Score: {r2:.4f} (Closer to 1.0 is better)")
 
 
 if __name__ == '__main__':
