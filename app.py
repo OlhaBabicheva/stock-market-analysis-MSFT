@@ -1,9 +1,8 @@
+from datetime import datetime, timedelta
 import streamlit as st
-import pandas as pd
 import numpy as np
 import yfinance as yf
 import joblib
-from datetime import datetime, timedelta
 
 # --- APP CONFIGURATION ---
 TICKER = 'MSFT'
@@ -75,66 +74,84 @@ st.markdown("This app provides statistical predictions for the **Next Day Closin
 
 bundle = load_bundle()
 
+# Check if the bundle exists; if not, show an error message
 if bundle is None:
     st.error("Model bundle not found. Please run `training.py` first to generate `models_bundle.joblib`.")
 else:
+    # Fetch the most recent live data for MSFT
     latest_df = get_latest_data(TICKER)
 
     if latest_df is not None:
-        # Get the very last row for prediction
+        # Extract the very last available row of data to use for the prediction
         current_data = latest_df.iloc[[-1]]
+        # Format the date and price for display
         last_date = current_data.index[0].strftime('%Y-%m-%d')
         last_price = float(current_data['Close'].iloc[0])
 
-        # Summary Statistics Row
+        # Create three columns for the summary metrics row
         col1, col2, col3 = st.columns(3)
+
         with col1:
             st.subheader("Market Status")
+            # Show the most recent closing price
             st.metric("Last Known Close", f"${last_price:,.2f}")
             st.caption(f"Data as of: {last_date}")
 
         with col2:
             st.subheader("Model Selection")
+            # Allow the user to choose between different trained models (e.g., Random Forest, Linear Regression)
             selected_model_name = st.selectbox("Choose Model", list(bundle['models'].keys()))
 
         with col3:
             st.subheader("Volatility Index")
+            # Show the most recent intraday price fluctuation
             daily_range = float(current_data['Daily_Range'].iloc[0])
             st.metric("Intraday Range", f"${daily_range:.2f}")
 
         # Prediction Logic
+        # 1. Get the exact list of features the model was trained on
         features_to_use = bundle['features']
+        # 2. Extract those values from our current data row
         X_raw = current_data[features_to_use].values
+        # 3. Apply the saved scaler to normalize the features
         X_scaled = bundle['scaler'].transform(X_raw)
 
+        # 4. Use the selected model to predict the next closing price
         model = bundle['models'][selected_model_name]
         prediction_val = model.predict(X_scaled)
         prediction = float(prediction_val[0])
 
+        # Add a visual horizontal line
         st.divider()
 
         # Display Prediction Statistics
         st.subheader(f"Statistical Analysis: {selected_model_name}")
+        # Calculate the dollar difference and percentage change from the last known price
         diff = prediction - last_price
         percent = (diff / last_price) * 100
 
+        # Create two columns for results
         res_col1, res_col2 = st.columns(2)
         with res_col1:
+            # Show the predicted price with a delta (green/red arrow)
             st.metric(
-                label="Predicted Next Close", 
-                value=f"${prediction:,.2f}", 
+                label="Predicted Next Close",
+                value=f"${prediction:,.2f}",
                 delta=f"{diff:+.2f} ({percent:+.2f}%)"
             )
 
         with res_col2:
+            # Determine market sentiment based on whether the prediction is up or down
             sentiment = "Bullish" if diff > 0 else "Bearish"
             st.info(f"Signal: **{sentiment}** | Expected change of **{percent:.2f}%**")
 
-        # Raw Data View
+        # Create an expandable section to let users inspect the raw math behind the prediction
         with st.expander("View Raw Feature Data (Last 10 Days)"):
             st.dataframe(latest_df.tail(10))
 
     else:
+        # Show error if yfinance fails or returns nothing
         st.error("Failed to fetch recent data from Yahoo Finance.")
 
+# Add a permanent disclaimer in the sidebar
 st.sidebar.info("Disclaimer: Statistical models are for informational purposes only. Trading involves significant risk.")
