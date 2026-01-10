@@ -1,5 +1,4 @@
 import yfinance as yf # Yahoo Finance API downloader (fetches historical market data)
-import pandas as pd # Data manipulation library
 import numpy as np # Numerical library (used for mathematical operations)
 
 # --- CONFIGURATION ---
