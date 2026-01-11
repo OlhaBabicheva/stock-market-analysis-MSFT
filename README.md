@@ -34,7 +34,7 @@ The software developed by the group is distributed under the **MIT License**.
 
 | Priority         | Meaning                                                                             |
 | ---------------- | ----------------------------------------------------------------------------------- |
-| **1 - Mandatory** | Mandatory requirement. The system is not considered correct or complete without it. |
+| **1 - Mandatory**| Mandatory requirement. The system is not considered correct or complete without it. |
 | **2 - Useful**   | Important but not critical requirement. Improves functionality or usability.        |
 | **3 - Optional** | Nice-to-have requirement. Not essential for core operation.                         |
 
@@ -47,7 +47,7 @@ The software developed by the group is distributed under the **MIT License**.
 | ID     | Name                | Description                                           | Priority | Category       | Status |
 | ------ | ------------------- | ----------------------------------------------------- | -------- | -------------- | ------ |
 | FR-01  | Data Download       | Fetch historical MSFT stock data from Yahoo Finance   | 1        | Functional     | Met    |
-| FR-02  | Feature Engineering | Calculate technical indicators        | 1        | Functional     | Met    |
+| FR-02  | Feature Engineering | Calculate technical indicators                        | 1        | Functional     | Met    |
 | NFR-01 | Data Accuracy       | Ensure correctness and consistency of downloaded data | 1        | Non-functional | Met    |
 
 ---
@@ -58,17 +58,18 @@ The software developed by the group is distributed under the **MIT License**.
 | ------ | ---------------- | ------------------------------------------------- | -------- | -------------- | ------ |
 | FR-03  | Model Training   | Train regression models (LR, RF, SVR, MLP)        | 1        | Functional     | Met    |
 | FR-04  | Model Evaluation | Evaluate models using standard regression metrics | 2        | Functional     | Met    |
-| NFR-02 | Performance      | Training completes within reasonable time         | 2        | Non-functional | Met    |
+| NFR-02 | Performance      | Training completes within reasonable time (< 1h)  | 2        | Non-functional | Met    |
 
 ---
 
 ### Module: Web Application
 
-| ID     | Name               | Description                                  | Priority | Category       | Status |
-| ------ | ------------------ | -------------------------------------------- | -------- | -------------- | ------ |
-| FR-05  | Prediction Display | Display next-day stock price prediction      | 1        | Functional     | Met    |
-| FR-06  | Live Data Fetching | Fetch latest market data for predictions     | 2        | Functional     | Met    |
-| NFR-03 | Usability          | Provide a clear and intuitive user interface | 2        | Non-functional | Met    |
+| ID     | Name                   | Description                                                       | Priority | Category       | Status      |
+| ------ | ---------------------- | ----------------------------------------------------------------- | -------- | -------------- | ----------- |
+| FR-05  | Prediction Display     | Display next-day stock price prediction                           | 1        | Functional     | Met         |
+| FR-06  | Live Data Fetching     | Fetch latest market data for predictions                          | 2        | Functional     | Met         |
+| NFR-03 | Usability              | Provide a clear and intuitive user interface                      | 2        | Non-functional | Met         |
+| FR-07  | Multilingual Interface | Support additional interface languages (Polish, Spanish, Chinese) | 3        | Functional     | Not met     |
 
 ---
 
@@ -76,7 +77,7 @@ The software developed by the group is distributed under the **MIT License**.
 
 * All **Priority 1 (Required)** requirements were implemented and verified.
 * All **Priority 2 (Useful)** requirements were implemented and tested successfully.
-* No Priority 3 requirements were defined for this version of the system.
+* There is one **Priority 3 (Optional)** requirement defined for this version of the system (FR-07: Multilingual Interface), which was not implemented.
 
 ---
 
