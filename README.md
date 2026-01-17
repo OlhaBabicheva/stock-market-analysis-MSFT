@@ -47,8 +47,8 @@ The software developed by the group is distributed under the **MIT License**.
 | ID     | Name                | Description                                           | Priority | Category       | Status |
 | ------ | ------------------- | ----------------------------------------------------- | -------- | -------------- | ------ |
 | FR-01  | Data Download       | Fetch historical MSFT stock data from Yahoo Finance   | 1        | Functional     | Met    |
-| FR-02  | Feature Engineering | Calculate technical indicators                        | 1        | Functional     | Met    |
-| NFR-01 | Data Accuracy       | Ensure correctness and consistency of downloaded data | 1        | Non-functional | Met    |
+| FR-02  | Feature Engineering | Calculate 10 technical indicators                     | 1        | Functional     | Met    |
+| FR-03  | Data Accuracy       | Ensure correctness and consistency of downloaded data | 1        | Functional     | Met    |
 
 ---
 
@@ -56,9 +56,9 @@ The software developed by the group is distributed under the **MIT License**.
 
 | ID     | Name             | Description                                       | Priority | Category       | Status |
 | ------ | ---------------- | ------------------------------------------------- | -------- | -------------- | ------ |
-| FR-03  | Model Training   | Train regression models (LR, RF, SVR, MLP)        | 1        | Functional     | Met    |
-| FR-04  | Model Evaluation | Evaluate models using standard regression metrics | 2        | Functional     | Met    |
-| NFR-02 | Performance      | Training completes within reasonable time (< 1h)  | 2        | Non-functional | Met    |
+| FR-04  | Model Training   | Train regression models (LR, RF, SVR, MLP)        | 1        | Functional     | Met    |
+| FR-05  | Model Evaluation | Evaluate models using standard regression metrics | 2        | Functional     | Met    |
+| FR-06  | Performance      | Training completes within reasonable time (< 1h)  | 2        | Functional     | Met    |
 
 ---
 
@@ -66,10 +66,10 @@ The software developed by the group is distributed under the **MIT License**.
 
 | ID     | Name                   | Description                                                       | Priority | Category       | Status      |
 | ------ | ---------------------- | ----------------------------------------------------------------- | -------- | -------------- | ----------- |
-| FR-05  | Prediction Display     | Display next-day stock price prediction                           | 1        | Functional     | Met         |
-| FR-06  | Live Data Fetching     | Fetch latest market data for predictions                          | 2        | Functional     | Met         |
-| NFR-03 | Usability              | Provide a clear and intuitive user interface                      | 2        | Non-functional | Met         |
-| FR-07  | Multilingual Interface | Support additional interface languages (Polish, Spanish, Chinese) | 3        | Functional     | Not met     |
+| FR-07  | Prediction Display     | Display next-day stock price prediction                           | 1        | Functional     | Met         |
+| FR-08  | Live Data Fetching     | Fetch latest market data for predictions                          | 1        | Functional     | Met         |
+| NFR-01 | Usability              | Provide a clear and intuitive user interface (display: market status, volatility range, predicted next close) | 2        | Non-functional | Met         |
+| FR-09  | Multilingual Interface | Support additional interface languages (Polish, Spanish, Chinese) | 3        | Functional     | Not met     |
 
 ---
 
@@ -77,7 +77,7 @@ The software developed by the group is distributed under the **MIT License**.
 
 * All **Priority 1 (Required)** requirements were implemented and verified.
 * All **Priority 2 (Useful)** requirements were implemented and tested successfully.
-* There is one **Priority 3 (Optional)** requirement defined for this version of the system (FR-07: Multilingual Interface), which was not implemented.
+* There is one **Priority 3 (Optional)** requirement defined for this version of the system (FR-09: Multilingual Interface), which was not implemented.
 
 ---
 
@@ -88,9 +88,9 @@ The software developed by the group is distributed under the **MIT License**.
 | Technology         | Purpose                                  | Version       |
 | ------------------ | ---------------------------------------- | ------------- |
 | Python             | Primary programming language             | **>= 3.10**   |
-| Visual Studio Code | Source code editing and debugging        | External tool |
-| GitHub             | Version control and collaboration        | Cloud-based   |
-| GitHub Actions     | CI/CD automation                         | Cloud-based   |
+| Visual Studio Code | Source code editing and debugging        | **>= 1.108**  |
+| GitHub             | Version control and collaboration        | Not specified |
+| GitHub Actions     | CI/CD automation                         | Not specified |
 | pandas             | Data preparation and feature engineering | **>= 2.3.2**  |
 | numpy              | Numerical and statistical computations   | **>= 2.1.2**  |
 | scikit-learn       | Machine learning model development       | **>= 1.7.2**  |
